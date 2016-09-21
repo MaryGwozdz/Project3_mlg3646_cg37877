@@ -1,20 +1,17 @@
 /* WORD LADDER Main.java
  * EE422C Project 3 submission by
  * Replace <...> with your actual data.
- * <Student1 Name>
- * <Student1 EID>
- * <Student1 5-digit Unique No.>
- * <Student2 Name>
- * <Student2 EID>
- * <Student2 5-digit Unique No.>
+ * Mary Gwozdz
+ * mlg3646
+ * 16450
+ * Christopher Gang
+ * cg37877
+ * 16450
  * Slip days used: <0>
- * Git URL:
+ * Git URL:https://github.com/MaryGwozdz/Project3_mlg3646_cg37877
  * Fall 2016
  */
-// hello test code
-// hello
-//
-//
+
 package assignment3;
 import java.util.*;
 import java.io.*;
