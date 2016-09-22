@@ -69,13 +69,30 @@ public class Main {
 	}
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
+		ArrayList<String> ladder = new ArrayList<String>();
+		Queue<String> queue = new LinkedList<String>();
+		queue.add(start);
 		
-		// TODO some code
 		Set<String> dict = makeDictionary();
+		Iterator dictIt = dict.iterator();
+		String test;
+		while (dictIt.hasNext()) {
+			test = (String) dictIt.next();
+			if (test.equals(start)) {
+				
+			}
+		}
+		
 		// TODO more code
 		
 		return null; // replace this line later with real return
 	}
+    
+    private boolean oneLetterDiff(String a, String b) {
+    	a = a.toLowerCase();
+    	
+    	return false;
+    }
     
 	public static Set<String>  makeDictionary () {
 		Set<String> words = new HashSet<String>();
