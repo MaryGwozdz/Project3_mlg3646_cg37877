@@ -58,17 +58,6 @@ public class Main {
 	}
 	
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
-		
-		// Returned list should be ordered start to end.  Include start and end.
-		// Return empty list if no ladder.
-		// TODO some code
-		Set<String> dict = makeDictionary();
-		// TODO more code
-		
-		return null; // replace this line later with real return
-	}
-	
-    public static ArrayList<String> getWordLadderBFS(String start, String end) {
 		ArrayList<String> ladder = new ArrayList<String>();
 
 		Queue<String> queue = new LinkedList<String>();
@@ -101,12 +90,19 @@ public class Main {
 			nextRung = (String) queueIt.next();
 			if (end.equals(nextRung)) {
 				ladder.add(nextRung);
+				ladder.add(end);
+				return ladder;
+			} else if (!getWordLadderDFS(nextRung, end).isEmpty()) {
+				ladder.addAll(getWordLadderDFS(nextRung, end));
 				return ladder;
 			}
 		}
 		
-		
-		return null; // replace this line later with real return
+		return new ArrayList<String>();
+	}
+	
+    public static ArrayList<String> getWordLadderBFS(String start, String end) {
+		return null;
 	}
     
     private static boolean oneLetterDiff(String a, String b) {
