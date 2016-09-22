@@ -35,8 +35,6 @@ public class Main {
 		}
 		initialize();
 		ArrayList<String> test = parse(kb);
-		System.out.println(test.get(0));
-		System.out.println(test.get(1));
 		
 		// TODO methods to read in words, output ladder
 	}
