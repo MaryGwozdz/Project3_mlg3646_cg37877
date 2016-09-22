@@ -89,9 +89,17 @@ public class Main {
 	}
     
     private boolean oneLetterDiff(String a, String b) {
-    	a = a.toLowerCase();
+    	String lowA = a.toLowerCase();
+    	String lowB = b.toLowerCase();
+    	int diffCounter = 0;
     	
-    	return false;
+    	for (int i = 0; i < a.length(); i++) {
+    		if (lowA.charAt(i) != lowB.charAt(i)) {
+    			diffCounter++;
+    		}
+    	}
+    	
+    	return diffCounter == 1 ? true : false;
     }
     
 	public static Set<String>  makeDictionary () {
