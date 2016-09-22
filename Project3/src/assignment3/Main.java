@@ -70,25 +70,46 @@ public class Main {
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
 		ArrayList<String> ladder = new ArrayList<String>();
+
 		Queue<String> queue = new LinkedList<String>();
+		
+		
+		// Adding first word to queue
 		queue.add(start);
+		
+		// Adding first word to ladder
+		ladder.add(start);
 		
 		Set<String> dict = makeDictionary();
 		Iterator dictIt = dict.iterator();
 		String test;
+		
+		// Adds one letter difference words to the queue
 		while (dictIt.hasNext()) {
 			test = (String) dictIt.next();
-			if (test.equals(start)) {
-				
+			if (oneLetterDiff(start, test)) {
+				if (!queue.contains(test)) {
+					queue.add(test);
+				}
 			}
 		}
 		
-		// TODO more code
+		Iterator queueIt = queue.iterator();
+		String nextRung;
+		
+		while (queueIt.hasNext()) {
+			nextRung = (String) queueIt.next();
+			if (end.equals(nextRung)) {
+				ladder.add(nextRung);
+				return ladder;
+			}
+		}
+		
 		
 		return null; // replace this line later with real return
 	}
     
-    private boolean oneLetterDiff(String a, String b) {
+    private static boolean oneLetterDiff(String a, String b) {
     	String lowA = a.toLowerCase();
     	String lowB = b.toLowerCase();
     	int diffCounter = 0;
