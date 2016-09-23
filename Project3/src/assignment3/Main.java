@@ -36,6 +36,7 @@ public class Main {
 		initialize();
 		ArrayList<String> twoWords = parse(kb);
 		ArrayList<String> ladder = getWordLadderDFS(twoWords.get(0), twoWords.get(1));
+
 		printLadder(ladder);
 		
 		// TODO methods to read in words, output ladder
@@ -66,7 +67,7 @@ public class Main {
 		
 		
 		// Adding first word to queue
-		queue.add(start);
+		
 		
 		// Adding first word to ladder
 		ladder.add(start);
@@ -75,16 +76,11 @@ public class Main {
 		Iterator dictIt = dict.iterator();
 		String test;
 		
-		// Adds one letter difference words to the queue
-		while (dictIt.hasNext()) {
-			test = (String) dictIt.next();
-			if (oneLetterDiff(start, test)) {
-				if (!queue.contains(test)) {
-					queue.add(test);
-				}
-			}
-		}
+		Node root = new Node(start, null, null);
+		root.setRoot(root);
+//		root.setChildren(wordTree);
 		
+		/*		
 		Iterator queueIt = queue.iterator();
 		String nextRung;
 		
@@ -99,8 +95,26 @@ public class Main {
 				return ladder;
 			}
 		}
+*/
 		
 		return new ArrayList<String>();
+	}
+	
+	public void wordTree(Node root, Node parent, String start, Set<String> dict) {
+//		Node child = new Node(start, parent, root);		
+		ArrayList<Node> children = new ArrayList<Node>();
+
+		
+		Iterator dictIt = dict.iterator();
+		String test;
+		while (dictIt.hasNext()) {
+			test = (String) dictIt.next();
+			if (oneLetterDiff(start, test)) {
+				
+				parent.getChildren().add(wordTree(root, child, test, dict));
+			}
+		}
+//		child.setChildren(children);
 	}
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
