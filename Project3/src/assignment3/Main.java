@@ -34,7 +34,9 @@ public class Main {
 			ps = System.out;			// default to Stdout
 		}
 		initialize();
-		ArrayList<String> test = parse(kb);
+		ArrayList<String> twoWords = parse(kb);
+		ArrayList<String> ladder = getWordLadderDFS(twoWords.get(0), twoWords.get(1));
+		printLadder(ladder);
 		
 		// TODO methods to read in words, output ladder
 	}
@@ -136,7 +138,12 @@ public class Main {
 	}
 	
 	public static void printLadder(ArrayList<String> ladder) {
-		
+		if (ladder.isEmpty()) {
+			System.out.println("Ladder is empty");
+		}
+		for (int i = 0; i < ladder.size(); i++) {
+			System.out.println(ladder.get(i));
+		}
 	}
 	// TODO
 	// Other private static methods here
