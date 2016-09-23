@@ -78,8 +78,9 @@ public class Main {
 		
 		Node root = new Node(start, null, null);
 		root.setRoot(root);
-//		root.setChildren(wordTree);
+		root.setChildren(wordTree(root, root, start, dict));
 		
+		//TODO go through wordtree to find ladder
 		/*		
 		Iterator queueIt = queue.iterator();
 		String nextRung;
@@ -100,21 +101,20 @@ public class Main {
 		return new ArrayList<String>();
 	}
 	
-	public void wordTree(Node root, Node parent, String start, Set<String> dict) {
-//		Node child = new Node(start, parent, root);		
+	public static ArrayList<Node> wordTree(Node root, Node parent, String start, Set<String> dict) {
 		ArrayList<Node> children = new ArrayList<Node>();
 
-		
 		Iterator dictIt = dict.iterator();
 		String test;
 		while (dictIt.hasNext()) {
 			test = (String) dictIt.next();
 			if (oneLetterDiff(start, test)) {
-				
-				parent.getChildren().add(wordTree(root, child, test, dict));
+				Node child = new Node(test, parent, root);
+				child.setChildren(wordTree(root, child, test, dict));
+				children.add(child);
 			}
 		}
-//		child.setChildren(children);
+		return children; 
 	}
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
