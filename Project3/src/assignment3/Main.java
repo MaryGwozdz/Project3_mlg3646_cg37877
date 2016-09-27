@@ -36,7 +36,6 @@ public class Main {
 		initialize();
 		ArrayList<String> twoWords = parse(kb);
 		ArrayList<String> ladder = getWordLadderDFS(twoWords.get(0), twoWords.get(1));
-
 		printLadder(ladder);
 		
 		// TODO methods to read in words, output ladder
@@ -82,7 +81,6 @@ public class Main {
 			queue.add(child.getName());
 		}
 		
-		
 		if (queue.contains(end)) {
 			ladder.add(end);
 			return ladder;
@@ -95,26 +93,6 @@ public class Main {
 				}
 			}
 		}
-		
-		
-		
-		//TODO go through wordtree to find ladder
-		/*		
-		Iterator queueIt = queue.iterator();
-		String nextRung;
-		
-		while (queueIt.hasNext()) {
-			nextRung = (String) queueIt.next();
-			if (end.equals(nextRung)) {
-				ladder.add(nextRung);
-				ladder.add(end);
-				return ladder;
-			} else if (!getWordLadderDFS(nextRung, end).isEmpty()) {
-				ladder.addAll(getWordLadderDFS(nextRung, end));
-				return ladder;
-			}
-		}
-*/
 		
 		return new ArrayList<String>();
 	}
@@ -148,7 +126,7 @@ public class Main {
 			test = (String) dictIt.next();
 			if (oneLetterDiff(start, test)) {
 				Node child = new Node(test, parent, root);
-				child.setChildren(wordTree(root, child, test, dict));
+//				child.setChildren(wordTree(root, child, test, dict));
 				children.add(child);
 			}
 		}
