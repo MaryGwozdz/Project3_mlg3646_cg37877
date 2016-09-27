@@ -66,9 +66,6 @@ public class Main {
 		Queue<String> queue = new LinkedList<String>();
 		
 		
-		// Adding first word to queue
-		
-		
 		// Adding first word to ladder
 		ladder.add(start);
 		
@@ -76,9 +73,30 @@ public class Main {
 		Iterator dictIt = dict.iterator();
 		String test;
 		
+		// Sets up word tree
 		Node root = new Node(start, null, null);
 		root.setRoot(root);
 		root.setChildren(wordTree(root, root, start, dict));
+		
+		for (Node child : root.getChildren()) {
+			queue.add(child.getName());
+		}
+		
+		
+		if (queue.contains(end)) {
+			ladder.add(end);
+			return ladder;
+		} else {
+			for (String neighbor: queue) {
+				
+				if (!getWordLadderDFS(neighbor,end).isEmpty()) {
+					ladder.addAll(getWordLadderDFS(neighbor, end));
+					return ladder;
+				}
+			}
+		}
+		
+		
 		
 		//TODO go through wordtree to find ladder
 		/*		
@@ -99,6 +117,26 @@ public class Main {
 */
 		
 		return new ArrayList<String>();
+	}
+	
+	public static boolean find(Node node, String value) {
+		if (node == null) {
+			return false;
+		}
+		node.setVisited(true);
+		if (node.getName().equals(value)) {
+			return true;
+		} else {
+			for (Node neighbor : node.getParent().getChildren()) {
+				if (!neighbor.isVisited()) {
+					boolean found = find(neighbor, value);
+					if (found) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 	
 	public static ArrayList<Node> wordTree(Node root, Node parent, String start, Set<String> dict) {

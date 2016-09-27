@@ -7,7 +7,14 @@ public class Node {
 	private Node parent;
 	private ArrayList<Node> children;
 	private Node root;
+	private boolean isVisited;
 	
+	public boolean isVisited() {
+		return isVisited;
+	}
+	public void setVisited(boolean isVisited) {
+		this.isVisited = isVisited;
+	}
 	public Node(String name, Node parent, Node root) {
 		this.name = name;
 		this.parent = parent;
