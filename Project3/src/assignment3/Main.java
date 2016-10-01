@@ -19,6 +19,11 @@ import java.io.*;
 public class Main {
 	
 	// static variables and constants only here.
+	static HashMap<String, String> ladderTracker; // <child, parent>
+	static Set<String> dict; //dictionary
+	static HashSet<String> curWords;
+	private static boolean oneMatchesEnd = false;
+	private static boolean endFound = false;
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -36,6 +41,7 @@ public class Main {
 		initialize();
 		ArrayList<String> twoWords = parse(kb);
 		ArrayList<String> ladder = getWordLadderDFS(twoWords.get(0), twoWords.get(1));
+
 		printLadder(ladder);
 		
 		// TODO methods to read in words, output ladder
@@ -45,6 +51,9 @@ public class Main {
 		// initialize your static variables or constants here.
 		// We will call this method before running our JUNIT tests.  So call it 
 		// only once at the start of main.
+		ladderTracker = new HashMap<String, String>();
+		dict = makeDictionary();
+		curWords = new HashSet<String>();
 	}
 	
 	/**
@@ -61,13 +70,12 @@ public class Main {
 	
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
 		ArrayList<String> ladder = new ArrayList<String>();
-
 		Queue<String> queue = new LinkedList<String>();
-		
 		
 		// Adding first word to ladder
 		ladder.add(start);
 		
+		// Sets up iterator for dictionary
 		Set<String> dict = makeDictionary();
 		Iterator dictIt = dict.iterator();
 		String test;
@@ -75,29 +83,77 @@ public class Main {
 		// Sets up word tree
 		Node root = new Node(start, null, null);
 		root.setRoot(root);
-		root.setChildren(wordTree(root, root, start, dict));
-		
-		for (Node child : root.getChildren()) {
-			queue.add(child.getName());
-		}
-		
-		if (queue.contains(end)) {
-			ladder.add(end);
-			return ladder;
-		} else {
-			for (String neighbor: queue) {
-				
-				if (!getWordLadderDFS(neighbor,end).isEmpty()) {
-					ladder.addAll(getWordLadderDFS(neighbor, end));
-					return ladder;
-				}
+		for (int i = 0; i < 5; i++) {
+			if (start.charAt(i) == end.charAt(i)) {
+				oneMatchesEnd = true;
 			}
+		}
+		root.setChildren(wordTree(root, root, start, end, dict));
+		
+		// Gets and prints word ladder
+		Stack<String> chosen = new Stack<String>();
+		boolean found = find(root, chosen, end);
+		if (found) {
+			for (int i = 0; i < chosen.size(); i++) {
+				System.out.println(chosen.pop());
+			}
+		} else if (!found) {
+			System.out.println("No word ladder can be found between " + start + " and " + end);
 		}
 		
 		return new ArrayList<String>();
 	}
 	
-	public static boolean find(Node node, String value) {
+	public static ArrayList<Node> wordTree(Node root, Node parent, String start, String end, Set<String> dict) {
+		ArrayList<Node> children = new ArrayList<Node>();
+
+		Iterator dictIt = dict.iterator();
+		String test;
+		while (dictIt.hasNext()) {
+			test = (String) dictIt.next();
+			
+			// testMatchesEnd is initially false. If at least one of the letters of test matches end and oneMatchesEnd
+			// is true then testMatchesEnd is true.
+			boolean testMatchesEnd = false;
+			for (int i = 0; i < 5; i++) {
+				if (test.charAt(i) == end.toUpperCase().charAt(i) && oneMatchesEnd) {
+					testMatchesEnd = true;
+					oneMatchesEnd = true;
+				}
+			}
+			if ((!testMatchesEnd && !oneMatchesEnd) || (testMatchesEnd && oneMatchesEnd)) {
+				testMatchesEnd = true;
+			}
+			
+			// Checks if test word is equal to end word
+			if (end.toUpperCase().equals(test) && oneLetterDiff(end, test)) {
+				endFound = true;
+			}
+			
+			// Checks if ancestry contains same word as test word
+			// If there is a match, set equalsAncestor to true and exit while loop
+			boolean equalsAncestor = false;
+			Node checkAncestry = parent;
+			while (checkAncestry != null) {
+				equalsAncestor = checkAncestry.getName().equals(test);
+				if (equalsAncestor) {
+					break;
+				}
+				checkAncestry = checkAncestry.getParent();
+			}
+			
+			// If there is a 1 letter difference and there is no equivalent ancestor 
+			// then add the node to children
+			if (oneLetterDiff(start, test) && !equalsAncestor && !endFound && testMatchesEnd) {
+				Node child = new Node(test, parent, root);
+				child.setChildren(wordTree(root, child, test, end, dict));
+				children.add(child);
+			}
+		}
+		return children; 
+	}
+	
+	private static boolean find(Node node, Stack<String> chosen, String value) {
 		if (node == null) {
 			return false;
 		}
@@ -107,30 +163,27 @@ public class Main {
 		} else {
 			for (Node neighbor : node.getParent().getChildren()) {
 				if (!neighbor.isVisited()) {
-					boolean found = find(neighbor, value);
+					chosen.push(value);
+					boolean found = find(neighbor, chosen, value);
 					if (found) {
 						return true;
 					}
+					chosen.pop();
 				}
 			}
 		}
 		return false;
 	}
 	
-	public static ArrayList<Node> wordTree(Node root, Node parent, String start, Set<String> dict) {
-		ArrayList<Node> children = new ArrayList<Node>();
-
-		Iterator dictIt = dict.iterator();
-		String test;
-		while (dictIt.hasNext()) {
-			test = (String) dictIt.next();
-			if (oneLetterDiff(start, test)) {
-				Node child = new Node(test, parent, root);
-//				child.setChildren(wordTree(root, child, test, dict));
-				children.add(child);
-			}
+	public static Node[] nodeDict(Set<String> dict, int dictLength) {
+		Iterator<String> dictIt = dict.iterator();
+		Node[] nodeDict = new Node[dictLength];
+		for (int i = 0; i < dictLength; i++) {
+			Node name = new Node(dictIt.next(), null, null);
+			nodeDict[i] = name;
+			nodeDict[i].setVisited(false);
 		}
-		return children; 
+		return nodeDict;
 	}
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
