@@ -175,16 +175,6 @@ public class Main {
 		return false;
 	}
 	
-	public static Node[] nodeDict(Set<String> dict, int dictLength) {
-		Iterator<String> dictIt = dict.iterator();
-		Node[] nodeDict = new Node[dictLength];
-		for (int i = 0; i < dictLength; i++) {
-			Node name = new Node(dictIt.next(), null, null);
-			nodeDict[i] = name;
-			nodeDict[i].setVisited(false);
-		}
-		return nodeDict;
-	}
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
 		return null;
